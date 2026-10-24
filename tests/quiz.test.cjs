@@ -1,0 +1,18 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const vm=require('node:vm');
+const fs=require('node:fs');
+const context={window:{}};vm.createContext(context);
+vm.runInContext(fs.readFileSync('config.js','utf8'),context);
+vm.runInContext(fs.readFileSync('quiz.js','utf8'),context);
+const config=context.window.QUIZ_CONFIG,calculate=context.window.calculateResult;
+test('15問・5段階・指定の5キャラ',()=>{assert.equal(config.questions.length,15);assert.equal(config.answers.length,5);assert.deepEqual(Array.from(config.types,t=>t.name),['ごきげん腸ちゃん','のんびり腸ちゃん','ぽんぽこ腸ちゃん','せっかち腸ちゃん','がんばり腸ちゃん']);});
+for(const type of config.types)test(`${type.name}に近い回答でそのキャラを返す`,()=>{const answers=config.questions.map(q=>Math.round(type.profile[q.type]*4)+1);assert.equal(calculate(config,answers).id,type.id);});
+test('全項目が低い回答はごきげん腸ちゃん',()=>assert.equal(calculate(config,Array(15).fill(1)).id,'happy'));
+test('同じ距離は配列順を優先',()=>{const copy={...config,types:[config.types[0],{...config.types[0],id:'duplicate'}]};assert.equal(calculate(copy,Array(15).fill(3)).id,'happy');});
+test('未回答・不正値を拒否',()=>{for(const a of [[],Array(15).fill(0),Array(15).fill(6)])assert.throws(()=>calculate(config,a));});
+test('配点を逆転しても設定を利用する',()=>{const copy={...config,score:[4,3,2,1,0]};assert.equal(calculate(copy,Array(15).fill(5)).id,'happy');});
+test('5キャラに指定されたPNGを重複なく割り当てる',()=>{
+ const files=['gokigen','nonbiri','ponpoko','sekkachi','ganbari'];
+ config.types.forEach((type,i)=>{assert.equal(type.image,`assets/characters/${files[i]}.png`);const data=fs.readFileSync(type.image);assert.equal(data.subarray(1,4).toString(),'PNG');assert(data.readUInt32BE(16)>0);assert(data.readUInt32BE(20)>0);});
+});
