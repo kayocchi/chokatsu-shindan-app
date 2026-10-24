@@ -2,7 +2,6 @@ const config=window.QUIZ_CONFIG, app=document.querySelector('#app');
 document.title=config.title+' | おなか日和';
 const state={name:'',age:'',answers:[],index:0};
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const mascot=()=>document.querySelector('#mascot').innerHTML;
 const privacy='<p class="privacy">♧ 入力情報・回答は外部に送信せず、保存しません。<br>ページを閉じたり再読み込みしたりすると消えます。</p>';
 const notice='<aside class="notice"><strong>ご利用の前に</strong><p>タイプ・判定はデモ用です。医学的な診断や体質の断定を行うものではありません。気になる症状がある場合は、医療機関へご相談ください。</p></aside>';
 function focusHeading(){const h=app.querySelector('h1');h.tabIndex=-1;h.focus({preventScroll:true});window.scrollTo(0,0);}
