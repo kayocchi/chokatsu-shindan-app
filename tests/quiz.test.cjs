@@ -1,0 +1,13 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const vm=require('node:vm');
+const fs=require('node:fs');
+const context={window:{}};vm.createContext(context);
+vm.runInContext(fs.readFileSync('config.js','utf8'),context);
+vm.runInContext(fs.readFileSync('quiz.js','utf8'),context);
+const config=context.window.QUIZ_CONFIG,calculate=context.window.calculateResult;
+test('15問・5タイプ・各3問の設定',()=>{assert.equal(config.questions.length,15);assert.equal(config.types.length,5);for(const t of config.types)assert.equal(config.questions.filter(q=>q.type===t.id).length,3);});
+for(const type of config.types)test(`${type.id} が最多なら該当タイプを返す`,()=>{const answers=config.questions.map(q=>q.type===type.id?5:1);assert.equal(calculate(config,answers).id,type.id);});
+test('同点はタイプ配列の先頭を優先',()=>assert.equal(calculate(config,Array(15).fill(3)).id,config.types[0].id));
+test('未回答・不正値を拒否',()=>{for(const a of [[],Array(15).fill(0),Array(15).fill(6)])assert.throws(()=>calculate(config,a));});
+test('設定した配点を利用する',()=>{const copy={...config,score:[4,3,2,1,0]};const answers=config.questions.map(q=>q.type==='rest'?1:5);assert.equal(calculate(copy,answers).id,'rest');});
