@@ -9,7 +9,7 @@ html = (root / 'index.html').read_text()
 css = (root / 'style.css').read_text()
 script = '\n'.join((root / name).read_text() for name in ['config.js', 'quiz.js', 'app.js'])
 # 画像も埋め込み、1ファイルだけで表示できるようにする。
-for image in sorted((root / 'assets/characters').glob('*.png')):
+for image in sorted((root / 'assets').rglob('*.png')):
     source = image.relative_to(root).as_posix()
     data = base64.b64encode(image.read_bytes()).decode()
     script = script.replace(source, 'data:image/png;base64,' + data)

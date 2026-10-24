@@ -14,3 +14,18 @@
 .result-art{margin:20px auto 26px;max-width:340px;border-radius:24px;overflow:hidden;background:#fff}
 .result-art img{display:block;width:100%;height:auto;max-height:410px;object-fit:contain}
 @media(max-width:650px){.result-art{width:100%;max-width:300px;margin:18px auto 24px}.result-art img{max-height:365px}}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+body.landing-page>header{display:none}
+body.landing-page main{max-width:760px;padding:0;margin:0 auto}
+.start-screen{position:relative;width:100%;margin:0 auto}
+.start-screen-image{display:block;width:100%;height:auto}
+.start-image-button,.start-info-button{position:absolute;background:transparent;border:0;margin:0;padding:0;border-radius:999px;box-shadow:none;cursor:pointer}
+.start-image-button{left:10.9%;top:83.6%;width:78.2%;height:9.8%}
+.start-info-button{left:87.9%;top:1.65%;width:8.2%;height:5.5%}
+.start-image-button:hover{background:#ffffff15}
+.start-image-button:active{background:#ae304118}
+.start-image-button:focus-visible,.start-info-button:focus-visible{outline:3px solid #8b3f37;outline-offset:3px}
+.start-guide{margin:16px 20px;padding:22px;border:1px solid var(--line);border-radius:16px;background:#fffdf9}
+.start-guide p{font-size:16px}
+body.landing-page .notice{padding:24px}
+@media(max-width:650px){body.landing-page main{padding:0}.start-guide{padding:18px}.start-guide h2{font-size:19px}}
