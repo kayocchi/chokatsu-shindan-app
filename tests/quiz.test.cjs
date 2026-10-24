@@ -12,3 +12,7 @@ test('全項目が低い回答はごきげん腸ちゃん',()=>assert.equal(calc
 test('同じ距離は配列順を優先',()=>{const copy={...config,types:[config.types[0],{...config.types[0],id:'duplicate'}]};assert.equal(calculate(copy,Array(15).fill(3)).id,'happy');});
 test('未回答・不正値を拒否',()=>{for(const a of [[],Array(15).fill(0),Array(15).fill(6)])assert.throws(()=>calculate(config,a));});
 test('配点を逆転しても設定を利用する',()=>{const copy={...config,score:[4,3,2,1,0]};assert.equal(calculate(copy,Array(15).fill(5)).id,'happy');});
+test('5キャラに指定されたPNGを重複なく割り当てる',()=>{
+ const files=['gokigen','nonbiri','ponpoko','sekkachi','ganbari'];
+ config.types.forEach((type,i)=>{assert.equal(type.image,`assets/characters/${files[i]}.png`);const data=fs.readFileSync(type.image);assert.equal(data.subarray(1,4).toString(),'PNG');assert(data.readUInt32BE(16)>0);assert(data.readUInt32BE(20)>0);});
+});

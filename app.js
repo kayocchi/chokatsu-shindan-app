@@ -2,15 +2,7 @@ const config=window.QUIZ_CONFIG, app=document.querySelector('#app');
 document.title=config.title+' | おなか日和';
 const state={name:'',age:'',answers:[],index:0};
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const mascot=(type)=>{
- let svg=document.querySelector('#mascot').innerHTML;
- if(!type)return svg;
- svg=svg.replace('にっこり笑うピンク色の腸のキャラクター',esc(type.name)+'のイラスト').replaceAll('#f6aaa5',type.color).replaceAll('#ffd0c8',type.color);
- if(type.id==='relaxed')svg=svg.replace('<ellipse cx="132" cy="145" rx="5" ry="7"/>','<path d="M125 145h14" stroke="#69483c" stroke-width="4" stroke-linecap="round"/>').replace('<ellipse cx="185" cy="145" rx="5" ry="7"/>','<path d="M178 145h14" stroke="#69483c" stroke-width="4" stroke-linecap="round"/>');
- if(type.id==='round')svg=svg.replace('M148 154Q160 167 172 154','M153 156Q160 149 167 156Q160 169 153 156');
- if(type.id==='effort')svg=svg.replace('M148 154Q160 167 172 154','M148 159Q160 153 172 159');
- return svg.replace('</svg>',`<text x="275" y="66" font-size="35" fill="#ad4e25" text-anchor="middle">${esc(type.symbol)}</text></svg>`);
-};
+const mascot=()=>document.querySelector('#mascot').innerHTML;
 const privacy='<p class="privacy">♧ 入力情報・回答は外部に送信せず、保存しません。<br>ページを閉じたり再読み込みしたりすると消えます。</p>';
 const notice='<aside class="notice"><strong>ご利用の前に</strong><p>タイプ・判定はデモ用です。医学的な診断や体質の断定を行うものではありません。気になる症状がある場合は、医療機関へご相談ください。</p></aside>';
 function focusHeading(){const h=app.querySelector('h1');h.tabIndex=-1;h.focus({preventScroll:true});window.scrollTo(0,0);}
@@ -26,7 +18,7 @@ function question(){
 }
 function result(){
  const type=calculateResult(config,state.answers);
- app.innerHTML=`<section class="result-card"><span class="pill">デモ用のタイプ判定</span><p class="result-name">${esc(state.name)}さんの、今の振り返り</p><div class="result-art">${mascot(type)}</div><p class="eyebrow">今のあなたに近い腸キャラは…</p><h1>${esc(type.name)}</h1><p class="result-description">${esc(type.description)}</p><div class="tips"><h2>今日からできる、小さな一歩</h2><ol>${type.tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><p class="demo-note">生活習慣を楽しく振り返るため、回答に近い腸キャラを1つ表示するデモです。キャラ名は腸の健康状態や体質を示すものではありません。</p><button class="secondary" id="retry">もう一度診断する ↻</button><button class="text-button" id="review">← 最後の質問に戻る</button>${privacy}</section>${notice}`;
+ app.innerHTML=`<section class="result-card" data-character="${esc(type.id)}"><span class="pill">デモ用のタイプ判定</span><p class="result-name">${esc(state.name)}さんの、今の振り返り</p><div class="result-art"><img src="${esc(type.image)}" alt="${esc(type.name)}のイラスト" width="338" height="394" decoding="async"></div><p class="eyebrow">今のあなたに近い腸キャラは…</p><h1>${esc(type.name)}</h1><p class="result-description">${esc(type.description)}</p><div class="tips"><h2>今日からできる、小さな一歩</h2><ol>${type.tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><p class="demo-note">生活習慣を楽しく振り返るため、回答に近い腸キャラを1つ表示するデモです。キャラ名は腸の健康状態や体質を示すものではありません。</p><button class="secondary" id="retry">もう一度診断する ↻</button><button class="text-button" id="review">← 最後の質問に戻る</button>${privacy}</section>${notice}`;
  app.querySelector('#retry').addEventListener('click',()=>{Object.assign(state,{name:'',age:'',answers:[],index:0});home(true);});app.querySelector('#review').addEventListener('click',()=>{state.index=config.questions.length-1;question();});focusHeading();
 }
 home();
