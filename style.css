@@ -29,3 +29,10 @@ body.landing-page main{max-width:760px;padding:0;margin:0 auto}
 .start-guide p{font-size:16px}
 body.landing-page .notice{padding:24px}
 @media(max-width:650px){body.landing-page main{padding:0}.start-guide{padding:18px}.start-guide h2{font-size:19px}}
+.result-subtitle{font-size:20px;color:var(--character-ink);margin:-8px 0 28px;font-weight:700}
+.result-checkpoints{text-align:left;margin:24px 0 28px}
+.result-checkpoints h2{font-size:21px;color:var(--character-ink);margin-bottom:18px}
+.result-checkpoints p,.result-card .tips p{font-size:17px;line-height:1.95;margin:0 0 16px;overflow-wrap:anywhere}
+.result-checkpoints p:last-child,.result-card .tips p:last-child{margin-bottom:0}
+.result-card .tips h2{margin-bottom:18px}
+@media(max-width:650px){.result-subtitle{font-size:18px}.result-checkpoints h2,.result-card .tips h2{font-size:18px}.result-checkpoints p,.result-card .tips p{font-size:17px}}
